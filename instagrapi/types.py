@@ -304,7 +304,7 @@ class ClipsIgArtist(TypesBaseModel):
     full_name: str
     is_private: bool = False
     is_verified: bool = False
-    profile_pic_id: str
+    profile_pic_id: Optional[str] = None
     profile_pic_url: str
     strong_id__: str
 
@@ -382,7 +382,7 @@ class ClipsMetadata(TypesBaseModel):
     originality_info: Optional[dict] = None
     reels_on_the_rise_info: Optional[dict] = None
     reusable_text_attribute_string: Optional[str] = None
-    reusable_text_info: Optional[dict] = None
+    reusable_text_info: Optional[List[dict]] = None
     shopping_info: Optional[dict] = None
     show_achievements: bool = False
     template_info: Optional[dict] = None
@@ -697,6 +697,13 @@ class DirectMessageImageCandidate(TypesBaseModel):
     scans_profile: Optional[str] = None
     fallback: Optional[FallbackUrl] = None
     url_expiration_timestamp_us: Optional[datetime] = None
+
+    @field_validator("url_expiration_timestamp_us", mode="before")
+    def parse_microseconds(cls, v):
+        if isinstance(v, int):
+            # Convert microseconds to seconds
+            return datetime.fromtimestamp(v / 1_000_000)
+        return v
 
 
 class DirectMessageImageVersions(TypesBaseModel):
