@@ -331,7 +331,7 @@ class ClipsOriginalSoundInfo(TypesBaseModel):
     music_canonical_id: Optional[str] = None
     oa_owner_is_music_artist: bool = False
     original_audio_subtype: str = "default"
-    original_audio_title: str = "Original audio"
+    original_audio_title: Union[str, dict] = "Original audio"
     original_media_id: int
     progressive_download_url: str
     should_mute_audio: bool = False
